@@ -28,7 +28,21 @@ const Taxa = sequelize.define('Taxa', {
         allowNull: false
     },
 });
+
+const Users = sequelize.define('Users', {
+    email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+    },
+    password: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+});
+
 module.exports = {
     sequelize: sequelize,
-    Taxa: Taxa
+    Taxa: Taxa,
+    Users: Users
 };
