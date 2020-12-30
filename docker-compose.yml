@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports: 
+    ports:
       - '5432:5432'
     volumes:
       - taxonomy-db:/var/lib/postgresql/data
@@ -22,6 +22,6 @@ services:
       - postgres
     ports:
       - '3000:3000'
-        
+
 volumes:
   taxonomy-db:
