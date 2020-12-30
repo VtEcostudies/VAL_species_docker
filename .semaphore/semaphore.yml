@@ -12,8 +12,8 @@ blocks:
           commands:
             - checkout
             - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
-            - 'docker pull "${DOCKER_USERNAME}/VAL_species_docker:latest" || true'
+            - 'docker pull "${DOCKER_USERNAME}/taxonomy:latest" || true'
             - 'docker build --cache-from "${DOCKER_USERNAME}/taxonomy:latest" -t "${DOCKER_USERNAME}/taxonomy:latest" .'
-            - 'docker push "${DOCKER_USERNAME}/VAL_species_docker:latest"'
+            - 'docker push "${DOCKER_USERNAME}/taxonomy:latest"'
       secrets:
         - name: dockerhub
