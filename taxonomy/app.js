@@ -19,6 +19,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/taxa', taxaRouter);
 
-console.log('DB_PASSWORD', process.env.DB_PASSWORD);
+//console.log('DB_PASSWORD', process.env.DB_PASSWORD);
 
 module.exports = app;
