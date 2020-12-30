@@ -1,3 +1,5 @@
+# JTL: root-level .txt files
+*.txt
 # Logs
 logs
 *.log
