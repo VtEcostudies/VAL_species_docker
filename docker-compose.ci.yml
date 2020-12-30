@@ -5,10 +5,10 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports: 
+    ports:
       - '5432:5432'
 
-  addressbook:
+  taxonomy:
     image: $DOCKER_USERNAME/taxonomy:latest
     command: "npn run migrate && npm run pm2"
     environment:
