@@ -15,11 +15,13 @@ const sequelize = new Sequelize(process.env.DB_SCHEMA || 'postgres',
 const Taxa = sequelize.define('Taxa', {
     taxonId: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     scientificName: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     taxonRank: {
         type: Sequelize.STRING,
