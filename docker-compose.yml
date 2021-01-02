@@ -1,5 +1,7 @@
 version: "3.7"
+
 services:
+
   postgres:
     image: postgres
     environment:
@@ -10,6 +12,13 @@ services:
     volumes:
       - taxonomy-db:/var/lib/postgresql/data
 
+  nginx-proxy:
+      image: jwilder/nginx-proxy
+      ports:
+        - "80:80"
+      volumes:
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+
   taxonomy:
     build:
       context: .
@@ -18,10 +27,12 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_HOST: postgres
+      VIRTUAL_HOST: taxonomy.local
     depends_on:
       - postgres
-    ports:
-      - '3000:3000'
+      - nginx-proxy
+#    ports:
+#      - '3000:3000'
 
 volumes:
   taxonomy-db:
