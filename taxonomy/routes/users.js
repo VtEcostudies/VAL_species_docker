@@ -22,7 +22,33 @@ router.get("/:id", function(req, res) {
         });
 });
 
+router.post("/", function(req, res) {
+    db.Users.create({
+        email: req.body.email,
+        password: req.body.password
+        })
+        .then( user => {
+            res.status(200).send(JSON.stringify(user));
+        })
+        .catch( err => {
+            res.status(500).send(JSON.stringify(err));
+        });
+});
+
 router.put("/", function(req, res) {
+    db.Users.create({
+        email: req.body.email,
+        password: req.body.password
+        })
+        .then( user => {
+            res.status(200).send(JSON.stringify(user));
+        })
+        .catch( err => {
+            res.status(500).send(JSON.stringify(err));
+        });
+});
+
+router.put("/:id", function(req, res) {
     db.Users.create({
         email: req.body.email,
         password: req.body.password

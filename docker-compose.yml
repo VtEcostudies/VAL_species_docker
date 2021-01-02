@@ -27,10 +27,11 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_HOST: postgres
-      VIRTUAL_HOST: taxonomy.local
+      VIRTUAL_HOST: taxonomy.vtatlasoflife.org
     depends_on:
       - postgres
       - nginx-proxy
+
 #    ports:
 #      - '3000:3000'
 

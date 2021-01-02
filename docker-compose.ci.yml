@@ -8,15 +8,23 @@ services:
     ports:
       - '5432:5432'
 
+  nginx-proxy:
+      image: jwilder/nginx-proxy
+      ports:
+        - "80:80"
+      volumes:
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+
   taxonomy:
     image: $DOCKER_USERNAME/taxonomy:latest
-    command: "npn run migrate && npm run pm2"
+    command: "npm run migrate && npm run pm2"
     environment:
       DB_SCHEMA: postgres
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_HOST: postgres
-    depends_on:
+      VIRTUAL_HOST: taxonomy.vtatlasoflife.org
+depends_on:
       - postgres
     ports:
       - '3000:3000'
