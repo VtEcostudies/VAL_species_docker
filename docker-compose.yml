@@ -20,6 +20,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   taxonomy:
+    image: jloomisvce/taxonomy
     build:
       context: .
     environment:
