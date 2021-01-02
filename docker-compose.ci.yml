@@ -1,5 +1,7 @@
 version: "3.7"
+
 services:
+
   postgres:
     image: postgres
     environment:
@@ -9,11 +11,11 @@ services:
       - '5432:5432'
 
   nginx-proxy:
-      image: jwilder/nginx-proxy
-      ports:
-        - "80:80"
-      volumes:
-        - /var/run/docker.sock:/tmp/docker.sock:ro
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
 
   taxonomy:
     image: $DOCKER_USERNAME/taxonomy:latest
@@ -24,7 +26,8 @@ services:
       DB_PASSWORD: postgres
       DB_HOST: postgres
       VIRTUAL_HOST: taxonomy.vtatlasoflife.org
-depends_on:
+    depends_on:
       - postgres
+      - nginx-proxy
     ports:
       - '3000:3000'
