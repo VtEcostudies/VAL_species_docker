@@ -18,6 +18,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   taxonomy:
+    #image: jloomisvce/taxonomy:latest
     image: $DOCKER_USERNAME/taxonomy:latest
     command: "npm run migrate && npm run pm2"
     environment:

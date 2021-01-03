@@ -16,7 +16,8 @@ const Taxa = sequelize.define('Taxa', {
     taxonId: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        primaryKey: true
     },
     scientificName: {
         type: Sequelize.STRING,

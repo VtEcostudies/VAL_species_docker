@@ -35,26 +35,19 @@ router.post("/", function(req, res) {
         });
 });
 
-router.put("/", function(req, res) {
-    db.Users.create({
-        email: req.body.email,
-        password: req.body.password
-        })
-        .then( user => {
-            res.status(200).send(JSON.stringify(user));
-        })
-        .catch( err => {
-            res.status(500).send(JSON.stringify(err));
-        });
-});
-
 router.put("/:id", function(req, res) {
-    db.Users.create({
-        email: req.body.email,
-        password: req.body.password
+    db.Users.update({
+          email: req.body.email,
+          password: req.body.password
+          }, {
+            where: {id: req.params.id}
         })
         .then( user => {
-            res.status(200).send(JSON.stringify(user));
+          if (user & user != 0) {
+              res.status(404).send(JSON.stringify(user));
+            } else {
+              res.status(200).send(JSON.stringify(user));
+            }
         })
         .catch( err => {
             res.status(500).send(JSON.stringify(err));
@@ -65,7 +58,7 @@ router.delete("/:id", function(req, res) {
     db.Users.destroy({
         where: {
             id: req.params.id
-        }
+          }
         })
         .then( () => {
             res.status(200).send();
