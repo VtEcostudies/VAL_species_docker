@@ -3,14 +3,17 @@ version: "3.7"
 services:
 
   postgres:
-    image: postgres
+    #image: postgres:13.1-alpine
+    image: jloomisvce/val_species-db:latest
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    build:
+      context: ./val_species-db
     ports:
-      - '5432:5432'
+      - '6543:5432'
     volumes:
-      - taxonomy-db:/var/lib/postgresql/data
+      - val_species-db:/var/lib/postgresql/data
 
   nginx-proxy:
     image: jwilder/nginx-proxy
@@ -19,22 +22,21 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
-  taxonomy:
-    image: jloomisvce/taxonomy:latest
+  val_species-api:
+    image: jloomisvce/val_species-api:latest
     build:
-      context: .
+      context: ./val_species-api
     environment:
-      DB_SCHEMA: postgres
+      DB_SCHEMA: val_species
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_HOST: postgres
-      VIRTUAL_HOST: taxonomy.vtatlasoflife.org
+      VIRTUAL_HOST: api.val_species.vtatlasoflife.org
     depends_on:
       - postgres
       - nginx-proxy
-
 #    ports:
 #      - '3000:3000'
 
 volumes:
-  taxonomy-db:
+  val_species-db:
