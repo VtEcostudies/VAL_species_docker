@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   val_species-db-postgis:
-    image: jloomisvce/dashboard:val_species-db-postgis
+    image: val_species-db-postgis
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -22,7 +22,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   val_species-api:
-    image: jloomisvce/dashboard:val_species-api
+    image: jloomisvce/val_species-api:latest
     build:
       context: ./val_species-api
     environment:

@@ -28,20 +28,22 @@ router.get(["/","/all"], function(req, res) {
 
   db.Taxa.findAll(condition)
       .then( taxa => {
-          res.status(200).send(JSON.stringify(taxa));
+          //res.status(200).send(JSON.stringify(taxa));
+          res.status(200).send(taxa);
       })
       .catch( err => {
-          res.status(500).send(JSON.stringify(err));
+          //res.status(500).send(JSON.stringify(err));
+          res.status(500).send(err);
       });
 });
 
 router.get("/:taxonId", function(req, res) {
     db.Taxa.findByPk(req.params.taxonId)
         .then( taxon => {
-            res.status(200).send(JSON.stringify(taxon));
+            res.status(200).send(taxon);
         })
         .catch( err => {
-            res.status(500).send(JSON.stringify(err));
+            res.status(500).send(err);
         });
 });
 
@@ -52,10 +54,10 @@ router.post("/", function(req, res) {
         taxonRank: req.body.taxonRank
         })
         .then( taxon => {
-            res.status(200).send(JSON.stringify(taxon));
+            res.status(200).send(taxon);
         })
         .catch( err => {
-            res.status(500).send(JSON.stringify(err));
+            res.status(500).send(err);
         });
 });
 
@@ -69,13 +71,13 @@ router.put("/:taxonId", function(req, res) {
         .then( taxon => {
           console.log(`***CUSTOM MESSAGE*** | PUT /taxa/:${req.params.taxonId} result: ${taxon}`)
           if (taxon & taxon != 0) {
-            res.status(200).send(JSON.stringify(taxon));
+            res.status(200).send(taxon);
           } else {
-            res.status(404).send(JSON.stringify(taxon));
+            res.status(404).send(taxon);
           }
         })
         .catch( err => {
-            res.status(500).send(JSON.stringify(err));
+            res.status(500).send(err);
         });
 });
 
@@ -89,7 +91,7 @@ router.delete("/:taxonId", function(req, res) {
             res.status(200).send();
         })
         .catch( err => {
-            res.status(500).send(JSON.stringify(err));
+            res.status(500).send(err);
         });
 });
 
