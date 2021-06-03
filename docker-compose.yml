@@ -17,7 +17,9 @@ services:
   nginx-proxy:
     image: jwilder/nginx-proxy
     ports:
-      - "8080:80"
+      # on localhost, use 8080 if apache2 or other already binds 80
+      #- "8080:80"
+      - "80:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
@@ -29,8 +31,13 @@ services:
       DB_SCHEMA: val_species
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_HOST: postgres
-      VIRTUAL_HOST: api.val_species.vtatlasoflife.org
+      # postgres database host must be the name of the postgres docker image, above
+      DB_HOST: val_species-db-postgis
+      DB_PORT: 5432
+      #DB_SSL: 0
+      # for nginx to work, this must match the url and host name. use /etc/hosts to map these onto localhost, etc.
+      #VIRTUAL_HOST: api.val_species.vtatlasoflife.org
+      VIRTUAL_HOST: localhost
     depends_on:
       - val_species-db-postgis
       - nginx-proxy

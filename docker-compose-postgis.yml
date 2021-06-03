@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   val_species-db-postgis:
-    image: val_species-db-postgis
+    image: jloomisvce/dashboard:val_species-db-postgis
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -17,20 +17,27 @@ services:
   nginx-proxy:
     image: jwilder/nginx-proxy
     ports:
-      - "8080:80"
+      # on localhost, use 8080 if apache2 or other already binds 80
+      #- "8080:80"
+      - "80:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   val_species-api:
-    image: jloomisvce/val_species-api:latest
+    image: jloomisvce/dashboard:val_species-api
     build:
       context: ./val_species-api
     environment:
       DB_SCHEMA: val_species
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_HOST: postgres
-      VIRTUAL_HOST: api.val_species.vtatlasoflife.org
+      # postgres database host must be the name of the postgres docker image, above
+      DB_HOST: val_species-db-postgis
+      DB_PORT: 5432
+      #DB_SSL: 0
+      #for nginx to work, this must match the url and host name
+      #VIRTUAL_HOST: api.val_species.vtatlasoflife.org
+      VIRTUAL_HOST: localhost
     depends_on:
       - val_species-db-postgis
       - nginx-proxy

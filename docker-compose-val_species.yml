@@ -30,7 +30,9 @@ services:
       DB_SCHEMA: val_species
       DB_USER: postgres
       DB_PASSWORD: postgres
+      # postgres database host must be the name of the postgres docker image, above
       DB_HOST: postgres
+      # for nginx to work, this must match the url and host name. use /etc/hosts to map these onto localhost, etc.
       VIRTUAL_HOST: api.val_species.vtatlasoflife.org
     depends_on:
       - postgres

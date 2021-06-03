@@ -33,6 +33,7 @@ router.get(["/","/all"], function(req, res) {
       })
       .catch( err => {
           //res.status(500).send(JSON.stringify(err));
+          console.log(`taxa.js | GET | ERROR | db.sequelize.config:`, db.sequelize.config);
           res.status(500).send(err);
       });
 });

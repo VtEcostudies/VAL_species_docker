@@ -1,4 +1,5 @@
-FROM node:10.16.0-alpine
+#FROM node:10.16.0-alpine
+FROM node:12.22.1
 RUN mkdir -p /opt/val
 WORKDIR /opt/val
 RUN adduser --disabled-password val
