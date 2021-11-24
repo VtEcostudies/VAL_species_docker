@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='taxonId') taxonId:
+      input#taxonId.form-control(type='text', placeholder='12345' name='taxonId' value=(undefined===taxon ? '' : taxon.taxonId))
+      label(for='scientificName') scientificName:
+      input#scientificName.form-control(type='text', placeholder='Rattus rattus' name='scientificName' value=(undefined===taxon ? '' : taxon.scientificName))
+      label(for='vernacularName') vernacularName:
+      input#vernacularName.form-control(type='text', placeholder='' name='vernacularName' value=(undefined===taxon ? '' : taxon.vernacularName))
+      label(for='taxonRank') taxonRank:
+      input#taxonRank.form-control(type='text', placeholder='' name='taxonRank' value=(undefined===taxon ? '' : taxon.taxonRank))
+      label(for='taxonomicStatus') taxonomicStatus:
+      input#taxonomicStatus.form-control(type='text', placeholder='' name='taxonomicStatus' value=(undefined===taxon ? '' : taxon.taxonomicStatus))
+      label(for='parentNameUsageId') parentNameUsageId:
+      input#parentNameUsageId.form-control(type='text', placeholder='' name='parentNameUsageId' value=(undefined===taxon ? '' : taxon.parentNameUsageId))
+      label(for='acceptedNameUsage') acceptedNameUsage:
+      input#acceptedNameUsage.form-control(type='text', placeholder='' name='acceptedNameUsage' value=(undefined===taxon ? '' : taxon.acceptedNameUsage))
+      label(for='nomenclaturalCode') nomenclaturalCode:
+      input#nomenclaturalCode.form-control(type='text', placeholder='' name='nomenclaturalCode' value=(undefined===taxon ? '' : taxon.nomenclaturalCode))
+
+      button.btn.btn-primary(type='submit') Submit
+
+  if errors
+   ul
+    for error in errors
+     li!= error.msg

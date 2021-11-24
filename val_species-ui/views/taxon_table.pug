@@ -1,0 +1,59 @@
+mixin taxon_table(taxon_list)
+
+  block content
+
+    table(class='table table-striped')
+      th Taxon ID
+      th Scientific Name
+      th Author
+      th Vernacular Name
+      th Rank
+      th Status
+      th Parent ID
+      th Accepted ID
+      th Accepted Name
+      tr
+        th
+        th Nomenclature
+        th Kingdom
+        th Phylum
+        th Class
+        th Order
+        th Family
+        th Genus
+        th Species
+      each taxon in taxon_list
+        tr
+          td
+            a(href=`/taxon/${taxon.taxonId}/update`) #{taxon.taxonId}
+          td #{taxon.scientificName}
+          td #{taxon.scientificNameAuthorship}
+          td #{taxon.vernacularName}
+          td #{taxon.taxonRank}
+          td #{taxon.taxonomicStatus}
+          td
+            a(href=taxon.parentNameUsageId) #{taxon.parentNameUsageId}
+          td
+            a(href=taxon.acceptedNameUsageId) #{taxon.acceptedNameUsageId}
+          td
+            a(href=taxon.acceptedNameUsageId) #{taxon.acceptedNameUsage}
+        tr
+          td
+          td #{taxon.nomenclaturalCode}
+          td
+            a(href=taxon.kingdomId) #{taxon.kingdom}
+          td
+            a(href=taxon.phylumId) #{taxon.phylum}
+          td
+            a(href=taxon.orderId) #{taxon.class}
+          td
+            a(href=taxon.orderId) #{taxon.order}
+          td
+            a(href=taxon.familyId) #{taxon.family}
+          td
+            a(href=taxon.genusId) #{taxon.genus}
+          td
+            a(href=taxon.speciesId) #{taxon.species}
+
+      else
+        p Not found.

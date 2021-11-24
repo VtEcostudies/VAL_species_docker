@@ -1,0 +1,73 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  form(method='POST' action='')
+    div.form-group
+      table(class='table table-striped')
+        th Taxon ID
+        th Scientific Name
+        th Author
+        th Vernacular Name
+        th Rank
+        th Status
+        th Parent ID
+        th Accepted ID
+          tr
+            td
+              input#taxonId.form-control(type='text', placeholder='12345' name='taxonId' value=(undefined===taxon ? '' : taxon.taxonId))
+            td
+              input#scientificName.form-control(type='text', placeholder=(taxon?taxon.scientificName:'Rattus rattus') name='scientificName' value=(undefined===taxon ? '' : taxon.scientificName))
+            td
+              input#scientificNameAuthorship.form-control(type='text', placeholder='' name='scientificNameAuthorship' value=(undefined===taxon ? '' : taxon.scientificNameAuthorship))
+            td
+              input#vernacularName.form-control(type='text', placeholder='' name='vernacularName' value=(undefined===taxon ? '' : taxon.vernacularName))
+            td
+              input#taxonRank.form-control(type='text', placeholder='' name='taxonRank' value=(undefined===taxon ? '' : taxon.taxonRank))
+            td
+              input#taxonomicStatus.form-control(type='text',replacereplacereplacereplace placeholder='' name='taxonomicStatus' value=(undefined===taxon ? '' : taxon.taxonomicStatus))
+            td
+              input#parentNameUsageId.form-control(type='text', placeholder='' name='parentNameUsageId' value=(undefined===taxon ? '' : taxon.parentNameUsageId))
+            td
+              input#acceptedNameUsageId.form-control(type='text', placeholder='' name='acceptedNameUsageId' value=(undefined===taxon ? '' : taxon.acceptedNameUsageId))
+
+        th Nomenclature
+        th Kingdom
+        th Phylum
+        th Class
+        th Order
+        th Family
+        th Genus
+        th Species
+          tr
+            td
+              input#nomenclaturalCode.form-control(type='text', placeholder='' name='nomenclaturalCode' value=(undefined===taxon ? '' : taxon.nomenclaturalCode))
+            td
+              input#kingdom.form-control(type='text', placeholder='' name='kingdom' value=(undefined===taxon ? '' : taxon.kingdom))
+            td
+              input#phylum.form-control(type='text', placeholder='' name='phylum' value=(undefined===taxon ? '' : taxon.phylum))
+            td
+              input#class.form-control(type='text', placeholder='' name='class' value=(undefined===taxon ? '' : taxon.class))
+            td
+              input#order.form-control(type='text', placeholder='' name='order' value=(undefined===taxon ? '' : taxon.order))
+            td
+              input#family.form-control(type='text', placeholder='' name='family' value=(undefined===taxon ? '' : taxon.family))
+            td
+              input#genus.form-control(type='text', placeholder='' name='genus' value=(undefined===taxon ? '' : taxon.genus))
+            td
+              input#species.form-control(type='text', placeholder='' name='species' value=(undefined===taxon ? '' : taxon.species))
+
+      button.btn.btn-primary(type='submit') Submit
+      button.btn(type='button' onclick=`gbif_api_get(${taxon.taxonId})`) GBIF
+      script
+        include gbif_api.js
+
+  if errors
+   ul
+    for error in errors
+     li!= error.msg
+
+  if gbif_taxon
+    block content
+      +taxon_table(gbif_taxon)

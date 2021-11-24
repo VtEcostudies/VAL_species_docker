@@ -1,0 +1,11 @@
+extends layout
+
+include taxon_table
+
+block content
+  h3= title
+
+  each item,key in search
+    p Search term: #[strong #{key} = #{item}]
+
+  +taxon_table(taxon_list)

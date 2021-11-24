@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #[em VAL Species Registry], a basic Express website.
+
+  if error
+    p Error getting taxon counts #{error}.
+  else
+    p #{title} taxon counts:
+
+    ul
+      li
+        a(href='/taxon/list') #[strong Taxa:] !{data.taxon_count}
+      li
+        a(href='/taxon/list?taxonRank=kingdom') #[strong Kingdom:] !{data.kingdom_count}
+      li
+        a(href='/taxon/list?taxonRank=phylum') #[strong Phylum:] !{data.phylum_count}
+      li
+        a(href='/taxon/list?taxonRank=class') #[strong Class:] !{data.class_count}
+      li
+        a(href='/taxon/list?taxonRank=order') #[strong Order:] !{data.order_count}
+      li
+        a(href='/taxon/list?taxonRank=family') #[strong Family:] !{data.family_count}
+      li
+        a(href='/taxon/list?taxonRank=genus') #[strong Genus:] !{data.genus_count}
+      li
+        a(href='/taxon/list?taxonRank=species') #[strong Species:] !{data.species_count}
+      li
+        a(href='/taxon/list?taxonRank=subspecies') #[strong Subspecies:] !{data.subspecies_count}
+      li
+        a(href='/taxon/list?taxonomicStatus=synonym') #[strong Synonyms:] !{data.synonym_count}
