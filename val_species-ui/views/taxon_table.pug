@@ -25,7 +25,7 @@ mixin taxon_table(taxon_list)
       each taxon in taxon_list
         tr
           td
-            a(href=`/taxon/${taxon.taxonId}/update`) #{taxon.taxonId}
+            a(href=`/taxon/${taxon.taxonId}`) #{taxon.taxonId}
           td #{taxon.scientificName}
           td #{taxon.scientificNameAuthorship}
           td #{taxon.vernacularName}

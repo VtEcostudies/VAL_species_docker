@@ -1,13 +1,17 @@
 extends layout
 
+include taxon_search
+
 block content
-  h1= title
-  p Welcome to #[em VAL Species Registry], a basic Express website.
+  h3= title
 
   if error
     p Error getting taxon counts #{error}.
   else
-    p #{title} taxon counts:
+
+    +taxon_search(search)
+    hr
+    p Taxon counts:
 
     ul
       li
@@ -29,4 +33,4 @@ block content
       li
         a(href='/taxon/list?taxonRank=subspecies') #[strong Subspecies:] !{data.subspecies_count}
       li
-        a(href='/taxon/list?taxonomicStatus=synonym') #[strong Synonyms:] !{data.synonym_count}
+        a(href='/taxon/list?taxonomicStatus|LIKE=%synonym%') #[strong Synonyms:] !{data.synonym_count}

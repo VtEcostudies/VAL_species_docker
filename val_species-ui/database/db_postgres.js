@@ -8,6 +8,7 @@ const { Pool } = require('pg'); //a Postgres Connection Pool, not to be confused
 const connPool = new Pool(config[env]);
 const types = require('pg').types;
 
+console.log(`db_postgres.js says:`);
 console.log(`hostname: ${os.hostname}`);
 console.log("environment:", env);
 console.dir(config[env]);

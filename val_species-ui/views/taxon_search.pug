@@ -1,0 +1,27 @@
+mixin taxon_search(search)
+
+  block content
+
+    form(method='POST' action='/taxon/list')
+      div.form-group
+        div(class='row')
+          div(class='col-sm-4')
+            table(class='table')
+              tr
+                td Taxon ID
+                td
+                  input#taxonId.form-control(type='text', name='taxonId' value=search.taxonId)
+              tr
+                td Scientific Name
+                td
+                  input#scientificName.form-control(type='text', name='scientificName' value=search.scientificName)
+              tr
+                td Common Name
+                td
+                  input#vernacularName.form-control(type='text', name='vernacularName' value=search.vernacularName)
+              tr
+                td Exact match
+                td
+                  input#exactMatch.form-control(type='checkbox', name='exactMatch' value=search.exactMatch)
+
+      button.btn.btn-primary(type='submit') Search

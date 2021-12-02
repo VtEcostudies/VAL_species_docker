@@ -8,8 +8,14 @@ var taxon_controller = require('../controllers/taxonController');
 router.get('/', taxon_controller.index);
 router.get('/taxa', taxon_controller.index);
 
-// GET request for list of all Taxa.
-router.get('/taxon/list', taxon_controller.taxon_list);
+// Handle POST on index page?
+//router.post(['/','/taxa',], taxon_controller.index_post)
+
+// GET request for list of Taxa.
+router.get('/taxon/list', taxon_controller.taxon_list_get);
+
+// POST request for Taxa from search page (params are in req.body not in req.query so send to a wrapper)
+router.post('/taxon/list', taxon_controller.taxon_list_post);
 
 // GET request for creating a Taxon. NOTE This must come before routes that display Taxa (uses id).
 router.get('/taxon/create', taxon_controller.taxon_create_get);
@@ -30,7 +36,7 @@ router.get('/taxon/:id/update', taxon_controller.taxon_update_get);
 router.post('/taxon/:id/update', taxon_controller.taxon_update_post);
 
 // GET request for one Taxon.
-router.get('/taxon/:id', taxon_controller.taxon_detail);
+router.get('/taxon/:id', taxon_controller.taxon_detail_get);
 
 /*
 //initial test route

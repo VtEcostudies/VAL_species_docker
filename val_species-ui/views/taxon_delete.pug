@@ -1,0 +1,17 @@
+extends layout
+
+include taxon_table
+
+block content
+  h3= title
+
+  +taxon_table(taxon_list)
+
+  h3 Are you absolutely certain that you want to delete this taxon?
+
+  form(method='POST', action=`/taxon/${taxonId}/delete`)
+    button.btn(type='submit') Delete (Form POST)
+  a(href=`/taxon/${taxonId}/delete`)
+    button.btn(type='button' method='POST') Yes, Delete
+  a(href=`${back_url}`)
+    button.btn.btn-primary(type='button') No! Cancel

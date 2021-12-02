@@ -1,4 +1,7 @@
-const secrets = require('./secrets')
+const secrets = require('./secrets').secrets;
+
+console.log(`config.js secrets`, secrets);
+
 const config = {
   local: {
     "user": process.env.DB_USER || 'postgres',

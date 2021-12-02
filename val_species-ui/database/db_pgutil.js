@@ -8,7 +8,7 @@ var tableColumns = {}; //empty object of tableName keys equal to array of column
 module.exports = {
   getColumns: (tableName, columns) => getColumns(tableName, columns),
   whereClause: (params, columns, clause, tableName) => whereClause(params, columns, clause, tableName),
-  parseColumns: (body, idx, cValues, staticColumns) => parseColumns(body, idx, cValues, staticColumns)
+  parseColumns: (body, idx, cValues, staticColumns, tableName) => parseColumns(body, idx, cValues, staticColumns, tableName)
 }
 
 /*
@@ -30,7 +30,7 @@ async function getColumns(tableName, columns=[]) {
             res.fields.forEach(fld => {
                 columns.push(String(fld.name));
             });
-            console.log(`${tableName} columns =>`); console.dir(columns); console.log(`^ ${tableName} columns.`);
+            //console.log(`${tableName} columns =>`, columns, `^ ${tableName} columns.`);
             tableColumns[tableName] = columns;
             return {tableName: columns};
         })
@@ -128,25 +128,30 @@ function whereClause(params={}, staticColumns=[], clause='WHERE', tableName='non
 
 /*
     Parse {column:value, ...} pairs from incoming http req.body object into structures used by postgres
-    This wlgcs for postgres INSERT and UPDATE queries by allowing for injection of a starting index and
+    This works for postgres INSERT and UPDATE queries by allowing for injection of a starting index and
     pre-populated array of values.
+
     Arguments:
-    body: an express req.body object
-    idx: positive integer starting value for the returned 'numbered' value list
-    cValue: empty or pre-populated array of query values
-    staticColumns: array of valid columns in the table
-    returns object having:
-    {
-        'named': "username,email,zipcode,..."
-        'numbered': $1,$2,$3,...
-        'values': ['jdoh','jdoh@dohsynth.com','91837',...]
-    }
+      body: an express req.body object
+      idx: positive integer starting value for the returned 'numbered' value list
+      cValues: empty or pre-populated array of query values
+      staticColumns: optional array of valid columns in the table
+      tableName: optional name of table to be inserted or updated
+
+    Return: object having:
+      {
+          'named': "username,email,zipcode,..."
+          'numbered': $1,$2,$3,...
+          'values': ['jdoh','jdoh@dohsynth.com','91837',...]
+      }
  */
-function parseColumns(body={}, idx=1, cValues=[], staticColumns=[]) {
+function parseColumns(body={}, idx=1, cValues=[], staticColumns=[], tableName=null) {
     var cNames = ''; // "username,email,zipcode,..."
     var cNumbr = ''; // "$1,$2,$3,..."
 
-    //console.log(`db_pg_util.parseColumns`, body, idx, cValues, staticColumns);
+    if (0 == staticColumns.length && tableName) {staticColumns = tableColumns[tableName] || [];}
+
+    console.log(`db_pgutil.parseColumns`, body, idx, cValues, staticColumns, tableName);
 
     if (Object.keys(body).length) {
         for (var key in body) {
