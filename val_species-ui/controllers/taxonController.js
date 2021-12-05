@@ -1,13 +1,21 @@
-var db = require('../database/db_postgres');
-var query = db.query;
+const db = require('../database/db_postgres');
+const query = db.query;
 const dbUtil = require('../database/db_pgutil');
 const parseColumns = dbUtil.parseColumns;
 const whereClause = dbUtil.whereClause;
-var async = require('async');
-const { body, validationResult } = require('express-validator');
+//const async = require('async');
+//const { body, validationResult } = require('express-validator');
 var url_back = {list: '/taxon/list'}; //an object with back_url values for various pages to use
-//var express = require('express');
-//var router = express.Router();
+
+dbUtil.setColumns('val_species') //initialize the db connection for this controller by populating the stored list of table columns
+  .then(ret => {console.log(`taxonController::setColumns | result:`, ret);})
+  .catch(err => {console.log(`taxonController::setColumns |`, err);})
+
+exports.init = function(req, res) {
+  dbUtil.setColumns('val_species') //initialize the db connection for this controller by populating the stored list of table columns
+    .then(ret => {res.json(ret);})
+    .catch(err => {res.json(err);})
+}
 
 // Display index home page
 exports.index = function(req, res) {
@@ -49,11 +57,12 @@ exports.taxon_list_post = function(req, res) {
   var exact = req.body.exactMatch || 0;
   //delete req.body.exactMatch;
 
+  // copy req.body to req.query before invoking the taxon_list_get method
   Object.keys(req.body).forEach((key,idx) => {
     if (req.body[key]) { //transfer non-null keys to req.query
       if (exact) { //exact match
         req.query[key] = req.body[key];
-      } else {
+      } else { //partial match
         req.query[`${key}|LIKE`] = `%${req.body[key]}%`;
       }
     }
@@ -78,10 +87,12 @@ function taxon_list_get(req, res) {
   var where = whereClause(req.query, [], 'WHERE', 'val_species');
   console.log(where);
 
-  query(`SELECT * FROM val_species ${where.text} LIMIT ${limit} OFFSET ${offset}`, where.values)
+  const subQ = `SELECT COUNT(*) FROM val_species  ${where.text}`;
+
+  query(`SELECT *,(${subQ}) AS count FROM val_species ${where.text} LIMIT ${limit} OFFSET ${offset}`, where.values)
     .then(ret => {
       //console.dir(ret.rows);
-      res.render('taxon_list', { title: 'VAL Taxon List', search: req.query, taxon_list: ret.rows, back_url: back_url, error: null });
+      res.render('taxon_list', { title: 'VAL Taxon List', search: req.query, taxon_list: ret.rows, back_url: back_url, error: null, count:ret.rows[0].count });
     })
     .catch(err => {
       res.render('taxon_list', { title: 'VAL Taxon List', search: req.query, taxon_list: [], back_url: back_url, error: err });
@@ -105,7 +116,7 @@ exports.taxon_detail_get = function(req, res) {
 
 // Display taxon create form on GET.
 exports.taxon_create_get = function(req, res, next) {
-    res.render('taxon_create', { title: 'Create VAL Taxon', taxonId: '', taxon: {}, errors: null });
+    res.render('taxon_create', { title: 'Create VAL Taxon', taxonId: '', taxon: {}, back_url: '/', errors: null });
 };
 
 // Handle taxon create on POST.
@@ -117,18 +128,18 @@ exports.taxon_create_post = (req, res) => {
 function create_taxon(req, res) {
   const parsed = parseColumns(req.body, 1, [], [], 'val_species');
   const sql = `INSERT INTO val_species (${parsed.named}) values (${parsed.numbered}) RETURNING *`;
-  const back_url = req.headers.referer;
 
   console.log(sql, parsed.values);
+
   query(sql, parsed.values)
     .then(ret => {
-      res.render('taxon_detail', { title: 'VAL Taxon Detail', taxonId: req.params.id, taxon_list: ret.rows, back_url: back_url, error: null });
+      res.redirect(`/taxon/${ret.rows[0].taxonId}`);
     })
     .catch(err => {
       console.log(err);
       errs = [{param:err.column, msg:err.message, location:'body'}];
       console.log(`postgres INSERT error:`, errs)
-      res.render('taxon_create', { title: 'Create VAL Taxon', taxonId: req.params.id, taxon: req.body, back_url: back_url, errors: errs});
+      res.render('taxon_create', { title: 'Create VAL Taxon', taxonId: req.params.id, taxon: req.body, back_url: '/', errors: errs});
     });
 }
 
@@ -159,10 +170,12 @@ exports.taxon_update_post = function(req, res) {
 function update_taxon(req, res) {
   const parsed = parseColumns(req.body, 2, [req.params.id], [], 'val_species');
   const sql = `UPDATE val_species SET (${parsed.named}) = (${parsed.numbered}) WHERE "taxonId"=$1 RETURNING *`;
+
   console.log(sql, parsed.values);
+
   query(sql, parsed.values)
     .then(ret => {
-      res.render('taxon_detail', { title: 'VAL Taxon Detail', taxonId: req.params.id, taxon_list: ret.rows, error: null });
+      res.redirect(`/taxon/${ret.rows[0].taxonId}`);
     })
     .catch(err => {
       console.log(err);
@@ -191,16 +204,16 @@ function show_delete_form(req, res) {
 // Handle taxon delete on POST.
 exports.taxon_delete_post = function(req, res) {
   console.log(`taxon_delete_post`);
-  delete_taxon(req.params.id, res);
+  delete_taxon(req, res);
 };
 
-function delete_taxon(id, res) {
+function delete_taxon(req, res) {
   const sql=`DELETE FROM val_species WHERE "taxonId"=$1`
-  query(sql,[id])
-    .then(res => {
-
+  query(sql,[req.params.id])
+    .then(ret => {
+      res.redirect(`/taxon/list?taxonId=${req.params.id}`);
     })
-    .catch(res => {
-
+    .catch(err => {
+      res.render('taxon_delete', { title: 'Delete VAL Taxon', taxonId: req.params.id, taxon_list: [], back_url: req.headers.referer, error: err });
     })
 }

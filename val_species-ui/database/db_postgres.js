@@ -13,8 +13,8 @@ console.log(`hostname: ${os.hostname}`);
 console.log("environment:", env);
 console.dir(config[env]);
 connPool.query('SELECT version()')
-  .then(res => {console.log(res.rows[0]);})
-  .catch(err => {console.log(err);});
+  .then(res => {console.log(`pg test query SUCCEEDED |`, res.rows[0]);})
+  .catch(err => {console.log(`pg test query FAILED |`, err);});
 
 /*
  * Fix date display error.

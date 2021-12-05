@@ -23,10 +23,10 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
-  val_species-ui:
-    image: jloomisvce/dashboard:val_species-ui
+  val_species-api:
+    image: jloomisvce/dashboard:val_species-api
     build:
-      context: ./val_species-ui
+      context: ./val_species-api
     environment:
       DB_SCHEMA: val_species
       DB_USER: postgres
@@ -46,7 +46,7 @@ services:
     # Tested this command with Dockerfile ENTRYPOINT commented, and it works.
     #command: ["./wait-for-pg.sh", "val_species-db-postgis", "npm", "run", "pm2"]
 #    ports:
-#      - '3001:3001'
+#      - '3000:3000'
 
 volumes:
   val_species-db:

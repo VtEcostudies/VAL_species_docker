@@ -1,13 +1,12 @@
-#FROM node:12.22.1
 FROM node:latest
-RUN mkdir -p /opt/val
-WORKDIR /opt/val
+RUN mkdir -p /opt/val_ui
+WORKDIR /opt/val_ui
 RUN adduser --disabled-password val
 COPY ./ .
-RUN chown -R val:val /opt/val
+RUN chown -R val:val /opt/val_ui
 USER val
 RUN npm install
-EXPOSE 3000
+EXPOSE 3001
 # docker-compose depends_on is not enough to wait for pg. Added wait-for-pg.sh.
 #CMD [ "npm", "run", "pm2" ]
 
@@ -26,7 +25,6 @@ RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive \
     apt-get install --no-install-recommends --assume-yes \
       postgresql-client
-# This does nothing - must chmod local file before copying
 RUN chmod +x /wait-for-pg.sh
 
 # DO NOT define both ENTRYPOINT here and command: (to call wait-for-pg.sh) in

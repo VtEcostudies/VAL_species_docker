@@ -1,12 +1,14 @@
-//var Taxon = require('../models/taxon');
 const db = require('../database/db_postgres');
 const query = db.query;
 const dbUtil = require('../database/db_pgutil');
 const parseColumns = dbUtil.parseColumns;
 const whereClause = dbUtil.whereClause;
 
-dbUtil.getColumns('val_species');
-
+/*
+dbUtil.setColumns('val_species') //initialize the db connection for this controller by populating the stored list of table columns
+  .then(ret => {console.log(`taxonApiController::setColumns | result:`, ret);})
+  .catch(err => {console.log(`taxonApiController::setColumns |`, err);})
+*/
 // Display list of all taxa.
 exports.taxon_list = function(req, res) {
   const limit = req.query.limit || 1000;

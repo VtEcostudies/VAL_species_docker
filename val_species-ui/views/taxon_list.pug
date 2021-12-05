@@ -4,6 +4,7 @@ include taxon_table
 
 block content
   h3= title
+  p Records: #{taxon_list.length} of #{count}
 
   each item,key in search
     p Search term: #[strong #{key} = #{item}]

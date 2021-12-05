@@ -5,11 +5,10 @@ var router = express.Router();
 var taxon_controller = require('../controllers/taxonController');
 
 // GET taxon home page.
-router.get('/', taxon_controller.index);
-router.get('/taxa', taxon_controller.index);
+router.get(['/','/taxa',], taxon_controller.index);
 
-// Handle POST on index page?
-//router.post(['/','/taxa',], taxon_controller.index_post)
+// GET request to initialize db columns for val_species table
+router.get('/taxon/init', taxon_controller.init);
 
 // GET request for list of Taxa.
 router.get('/taxon/list', taxon_controller.taxon_list_get);

@@ -4,7 +4,7 @@ const dbUtil = require('../database/db_pgutil');
 const parseColumns = dbUtil.parseColumns;
 const whereClause = dbUtil.whereClause;
 
-dbUtil.getColumns('val_species');
+//dbUtil.getColumns('val_species');
 
 // Return count of all taxa.
 exports.count = function(where, cb=function()) {

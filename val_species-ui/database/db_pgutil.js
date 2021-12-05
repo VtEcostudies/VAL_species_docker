@@ -7,6 +7,7 @@ var tableColumns = {}; //empty object of tableName keys equal to array of column
 
 module.exports = {
   getColumns: (tableName, columns) => getColumns(tableName, columns),
+  setColumns: (tableName, columns) => setColumns(tableName, columns),
   whereClause: (params, columns, clause, tableName) => whereClause(params, columns, clause, tableName),
   parseColumns: (body, idx, cValues, staticColumns, tableName) => parseColumns(body, idx, cValues, staticColumns, tableName)
 }
@@ -30,13 +31,38 @@ async function getColumns(tableName, columns=[]) {
             res.fields.forEach(fld => {
                 columns.push(String(fld.name));
             });
-            //console.log(`${tableName} columns =>`, columns, `^ ${tableName} columns.`);
+            console.log(`db_pgutil::getColumns | ${tableName} columns =>`, columns, `^ ${tableName} columns.`);
             tableColumns[tableName] = columns;
             return {tableName: columns};
         })
         .catch(err => {
             throw err;
         });
+}
+
+/*
+  New function to set local file-scope object of table columns, and
+  to use promises.
+*/
+function setColumns(tableName, columns=[]) {
+
+    const text = `select * from ${tableName} limit 0;`;
+
+    return new Promise((resolve, reject) => {
+      query(text)
+          .then(res => {
+              res.fields.forEach(fld => {
+                  columns.push(String(fld.name));
+              });
+              //console.log(`db_pgutil::setColumns | ${tableName} columns =>`, columns, `^ ${tableName} columns.`);
+              tableColumns[tableName] = columns;
+              resolve({'tableName': tableName, 'columns': columns});
+          })
+          .catch(err => {
+              //console.log(`db_pgutil::setColumns | ${tableName} | ERROR:`, err);
+              reject(err);
+          });
+      });
 }
 
 /*
@@ -156,7 +182,7 @@ function parseColumns(body={}, idx=1, cValues=[], staticColumns=[], tableName=nu
     if (Object.keys(body).length) {
         for (var key in body) {
             if (staticColumns.includes(key)) { //test for key (db column) in staticColumns, a file-scope array of db columns generated at server startup
-                cValues.push(body[key]);
+                cValues.push(body[key].trim());
                 cNames += `"${key}",`;
                 cNumbr += `$${idx++},`;
             }

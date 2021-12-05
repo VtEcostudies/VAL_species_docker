@@ -1,8 +1,9 @@
 {
   "name": "val-species-ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
+    "pm2": "pm2 start processes.json --no-daemon",
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
     "serverstart": "DEBUG=val-species-ui:* npm run devstart"
@@ -16,7 +17,8 @@
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "pg": "^8.7.1",
-    "pug": "^2.0.4"
+    "pm2": "^5.1.2",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
