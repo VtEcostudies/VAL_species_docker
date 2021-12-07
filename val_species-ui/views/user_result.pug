@@ -1,0 +1,14 @@
+extends layout
+
+block content
+
+  h3= title
+
+  h5= message
+
+  if error
+    a(href=`/user/reset`)
+      button.btn.btn-primary(type='button') Reset
+  else
+    a(href=`/`)
+      button.btn.btn-primary(type='button') Home

@@ -1,0 +1,33 @@
+extends layout
+
+block content
+
+  h3 Register User
+
+  form(method='POST' action='/user/register')
+    div.form-group
+      div(class='row')
+        div(class='col-sm-4')
+          table(class='table')
+            tr
+              td First Name
+              td
+                input#firstName.form-control(type='text', name='firstName' value=user.firstName)
+            tr
+              td Last Name
+              td
+                input#lastName.form-control(type='text', name='lastName' value=user.lastName)
+            tr
+              td email
+              td
+                input#email.form-control(type='text', name='email' value=user.email)
+            tr
+              td Username
+              td
+                input#userName.form-control(type='text', name='userName' value=user.userName)
+            tr
+              td Password
+              td
+                input#password.form-control(type='text', name='password' value=user.password)
+
+    button.btn.btn-primary(type='submit') Register

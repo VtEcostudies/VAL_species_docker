@@ -4,8 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var usersRouter = require('./express-pg-user/user_routes_pg');
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var taxonRouter = require('./routes/taxon');
 var taxonApiRouter = require('./routes/taxonApi');
 
@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/', taxonRouter);
 app.use('/api', taxonApiRouter);
 

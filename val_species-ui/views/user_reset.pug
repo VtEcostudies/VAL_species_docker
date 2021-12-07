@@ -1,0 +1,19 @@
+extends layout
+
+block content
+
+  h3 Reset Password Email
+
+  form(method='POST' action='/user/reset')
+    div.form-group
+      div(class='row')
+        div(class='col-sm-4')
+          table(class='table')
+            tr
+              td Email
+              td
+                input#email.form-control(type='text', name='email' value=user.email)
+
+    button.btn.btn-primary(type='submit') Reset
+    a(href=`${cancel_url}`)
+      button.btn(type='button') Cancel

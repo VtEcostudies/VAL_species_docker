@@ -1,0 +1,23 @@
+extends layout
+
+block content
+
+  h3 User Login
+
+  form(method='POST' action='/user/authenticate')
+    div.form-group
+      div(class='row')
+        div(class='col-sm-4')
+          table(class='table')
+            tr
+              td Username
+              td
+                input#userName.form-control(type='text', name='userName' value=user.userName)
+            tr
+              td Password
+              td
+                input#password.form-control(type='text', name='password' value=user.password)
+
+    button.btn.btn-primary(type='submit') Login
+    a(href=`${cancel_url}`)
+      button.btn(type='button') Cancel

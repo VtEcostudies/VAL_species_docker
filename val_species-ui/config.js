@@ -18,7 +18,9 @@ const config = {
     "host": process.env.DB_HOST || 'localhost',
     "port": process.env.DB_PORT || 6543,
     "ssl": process.env.DB_SSL == "true"
-  }
+  },
+  email_hostname: 'vtecostudies.org',
+  app_servicename: 'VAL Species Registry'
 }
 
 module.exports = {config};

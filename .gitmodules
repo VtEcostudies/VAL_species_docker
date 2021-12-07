@@ -1,0 +1,3 @@
+[submodule "val_species-ui/express-pg-user"]
+	path = val_species-ui/express-pg-user
+	url = https://github.com/VtEcostudies/express-pg-user.git
