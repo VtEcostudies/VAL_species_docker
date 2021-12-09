@@ -3,9 +3,6 @@ const query = db.query;
 const dbUtil = require('../database/db_pgutil');
 const parseColumns = dbUtil.parseColumns;
 const whereClause = dbUtil.whereClause;
-//const async = require('async');
-//const { body, validationResult } = require('express-validator');
-var url_back = {list: '/taxon/list'}; //an object with back_url values for various pages to use
 
 dbUtil.setColumns('val_species') //initialize the db connection for this controller by populating the stored list of table columns
   .then(ret => {console.log(`taxonController::setColumns | result:`, ret);})
@@ -79,10 +76,6 @@ exports.taxon_list_get = function(req, res) {
 function taxon_list_get(req, res) {
   const limit = req.query.limit || 100;
   const offset = req.query.offset || 0;
-  const back_url = '/'; //req.headers.referer;
-
-  // save the route and params here for other to use for back_url to return here with last search implemented
-  url_back.list = req.originalUrl;
 
   var where = whereClause(req.query, [], 'WHERE', 'val_species');
   console.log(where);
@@ -92,31 +85,28 @@ function taxon_list_get(req, res) {
   query(`SELECT *,(${subQ}) AS count FROM val_species ${where.text} LIMIT ${limit} OFFSET ${offset}`, where.values)
     .then(ret => {
       //console.dir(ret.rows);
-      res.render('taxon_list', { title: 'VAL Taxon List', search: req.query, taxon_list: ret.rows, back_url: back_url, error: null, count:ret.rows[0].count });
+      res.render('taxon_list', { title: 'VAL Taxon List', search: req.query, taxon_list: ret.rows, user: req.user, error: null, count:ret.rows[0].count });
     })
     .catch(err => {
-      res.render('taxon_list', { title: 'VAL Taxon List', search: req.query, taxon_list: [], back_url: back_url, error: err });
+      res.render('taxon_list', { title: 'VAL Taxon List', search: req.query, taxon_list: [], user: req.user, error: err });
     });
 }
 
 // Display detail page for a specific taxonId. id passed as route param, req.params.id
 exports.taxon_detail_get = function(req, res) {
-  const back_url = url_back.list;
-
-  console.log('taxon_detail_get | back_url:', back_url);
 
   query(`SELECT * FROM val_species WHERE "taxonId"=$1`, [req.params.id])
     .then(ret => {
-      res.render('taxon_detail', { title: 'VAL Taxon Detail', taxonId: req.params.id, taxon_list: ret.rows, back_url: back_url, error: null });
+      res.render('taxon_detail', { title: 'VAL Taxon Detail', taxonId: req.params.id, taxon_list: ret.rows, user: req.user, error: null });
     })
     .catch(err => {
-      res.render('taxon_detail', { title: 'VAL Taxon Detail', taxonId: req.params.id, taxon_list: [], back_url: back_url, error: err });
+      res.render('taxon_detail', { title: 'VAL Taxon Detail', taxonId: req.params.id, taxon_list: [], user: req.user, error: err });
     });
 };
 
 // Display taxon create form on GET.
 exports.taxon_create_get = function(req, res, next) {
-    res.render('taxon_create', { title: 'Create VAL Taxon', taxonId: '', taxon: {}, back_url: '/', errors: null });
+    res.render('taxon_create', { title: 'Create VAL Taxon', taxonId: '', taxon: {}, user: req.user, errors: null });
 };
 
 // Handle taxon create on POST.
@@ -139,7 +129,7 @@ function create_taxon(req, res) {
       console.log(err);
       errs = [{param:err.column, msg:err.message, location:'body'}];
       console.log(`postgres INSERT error:`, errs)
-      res.render('taxon_create', { title: 'Create VAL Taxon', taxonId: req.params.id, taxon: req.body, back_url: '/', errors: errs});
+      res.render('taxon_create', { title: 'Create VAL Taxon', taxonId: req.params.id, taxon: req.body, user: req.user, errors: errs});
     });
 }
 
@@ -152,11 +142,11 @@ exports.taxon_update_get = function(req, res) {
 function show_update_form(req, res) {
   query(`SELECT * FROM val_species WHERE "taxonId"=$1`, [req.params.id])
     .then(ret => {
-      res.render('taxon_create', { title: 'Update VAL Taxon', taxonId: req.params.id, taxon: ret.rows[0], back_url: req.headers.referer, error: null });
+      res.render('taxon_create', { title: 'Update VAL Taxon', taxonId: req.params.id, taxon: ret.rows[0], user: req.user, error: null });
     })
     .catch(err => {
       //passing the value 'taxonId' indicates this is an UPDATE not an INSERT
-      res.render('taxon_create', { title: 'Update VAL Taxon', taxonId: req.params.id, taxon: {}, error: err });
+      res.render('taxon_create', { title: 'Update VAL Taxon', taxonId: req.params.id, taxon: {}, user: req.user, error: err });
     });
 }
 
@@ -181,7 +171,7 @@ function update_taxon(req, res) {
       console.log(err);
       errs = [{param:err.column, msg:err.message, location:'body'}];
       console.log(`postgres UPDATE error:`, errs)
-      res.render('taxon_create', { title: 'Create VAL Taxon', taxonId: req.params.id, taxon: req.body, errors: errs});
+      res.render('taxon_create', { title: 'Create VAL Taxon', taxonId: req.params.id, taxon: req.body, user: req.user, errors: errs});
     });
 }
 
@@ -194,10 +184,10 @@ exports.taxon_delete_get = function(req, res) {
 function show_delete_form(req, res) {
   query(`SELECT * FROM val_species WHERE "taxonId"=$1`, [req.params.id])
     .then(ret => {
-      res.render('taxon_delete', { title: 'Delete VAL Taxon', taxonId: req.params.id, taxon_list: ret.rows, back_url: req.headers.referer, error: null });
+      res.render('taxon_delete', { title: 'Delete VAL Taxon', taxonId: req.params.id, taxon_list: ret.rows, user: req.user, error: null });
     })
     .catch(err => {
-      res.render('taxon_delete', { title: 'Delete VAL Taxon', taxonId: req.params.id, taxon_list: [], back_url: req.headers.referer, error: err });
+      res.render('taxon_delete', { title: 'Delete VAL Taxon', taxonId: req.params.id, taxon_list: [], user: req.user, error: err });
     });
 }
 
@@ -214,6 +204,6 @@ function delete_taxon(req, res) {
       res.redirect(`/taxon/list?taxonId=${req.params.id}`);
     })
     .catch(err => {
-      res.render('taxon_delete', { title: 'Delete VAL Taxon', taxonId: req.params.id, taxon_list: [], back_url: req.headers.referer, error: err });
+      res.render('taxon_delete', { title: 'Delete VAL Taxon', taxonId: req.params.id, taxon_list: [], user: req.user, error: err });
     })
 }

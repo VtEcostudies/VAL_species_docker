@@ -23,8 +23,8 @@ const config = {
   app_servicename: 'VAL Species Registry',
   openRoutes: [
     '/',
-    '/taxa',
     '/taxon/list',
+    /^\/taxon\/.*/,
     { url: /^\/taxon\/.*/, methods: ['GET'] } // /taxon/:id
   ]
 }
