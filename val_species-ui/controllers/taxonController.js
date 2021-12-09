@@ -36,11 +36,11 @@ exports.index = function(req, res) {
       )
       .then(ret => {
         console.log(ret.rows[0]);
-        res.render('index', { title: 'VAL Species Registry', search: search, data: ret.rows[0], error: null });
+        res.render('index', { title: 'VAL Species Registry', search: search, data: ret.rows[0], user: req.user, error: null });
       })
       .catch(err => {
         console.log(err.message);
-        res.render('index', { title: 'VAL Species Registry', search: search, data: {}, error: err });
+        res.render('index', { title: 'VAL Species Registry', search: search, data: {}, user: req.user, error: err });
       });
 };
 

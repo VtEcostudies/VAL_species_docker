@@ -15,16 +15,23 @@ html(lang='en')
           block sidebar
             ul(class='sidebar-nav')
               li
-                a(href='/taxa') Search
+                a(href='/') Search
               li
                 hr
-              if role && 'admin'==role
+              if user && 'admin'==user.userrole
                 li
                   a(href='/taxon/create') Create new taxon
                 li
                   hr
-              li
-                a(href='/user/login') Login
+
+              if user
+                li #{user.username}
+                li
+                  a(href='/user/logout') Logout
+              else
+                li
+                  a(href='/user/login') Login
+
               li
                 a(href='/user/register') Register
               li

@@ -20,7 +20,13 @@ const config = {
     "ssl": process.env.DB_SSL == "true"
   },
   email_hostname: 'vtecostudies.org',
-  app_servicename: 'VAL Species Registry'
+  app_servicename: 'VAL Species Registry',
+  openRoutes: [
+    '/',
+    '/taxa',
+    '/taxon/list',
+    { url: /^\/taxon\/.*/, methods: ['GET'] } // /taxon/:id
+  ]
 }
 
 module.exports = {config};
