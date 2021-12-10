@@ -7,9 +7,15 @@ block content
 
   +taxon_table(taxon_list)
 
-  a(href=`/taxon/${taxonId}/update`)
-    button.btn.btn-primary(type='button') Update
-  a(href=`/taxon/${taxonId}/delete`)
-    button.btn.btn-primary(type='button') Delete
+  if user && 'admin'==user.userrole
+    a(href=`/taxon/${taxonId}/update`)
+      button.btn.btn-primary(type='button') Update
+    a(href=`/taxon/${taxonId}/delete`)
+      button.btn.btn-primary(type='button') Delete
+
+  if 1==taxon_list.length
+    a(href=`https://www.gbif.org/species/${taxon_list[0].taxonId}` target='_blank')
+      button.btn.btn-primary(type='button') GBIF
+
   a(href=`/`)
     button.btn(type='button') Cancel

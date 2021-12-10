@@ -7,7 +7,7 @@ const logger = require('morgan');
 const auth_token_handler = require('./express-pg-user/auth_token_handler');
 
 var userRouter = require('./express-pg-user/user_routes_pg');
-var taxonRouter = require('./routes/taxon');
+var taxonRouter = require('./routes/taxon_routes');
 var taxonApiRouter = require('./routes/taxonApi');
 
 var app = express();
@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use(expJwt()); // use express-jwt to secure the api with authorization header Bearer token
-app.use((req, res, next) => { auth_token_handler(req, res, next) }); // use jwt-verify to secure pug ui and api with login cooke or authorization header Bearer token
+app.use((req, res, next) => { auth_token_handler(req, res, next) }); // use jwt-verify to secure pug ui and api with login cookie or authorization header Bearer token
 
 app.use('/', taxonRouter);
 app.use('/user', userRouter);

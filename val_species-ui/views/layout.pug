@@ -11,6 +11,12 @@ html(lang='en')
   body
     div(class='container-fluid')
       div(class='row')
+        div(class='col-sm-2')
+        div(class='col-sm-1')
+          a(href='https://val.vtecostudies.org')
+            img(src='/images/val-logo.jpg', style='height:50px; margin-top:10px;  ' alt='VAL')
+      hr
+      div(class='row')
         div(class='col-sm-1')
           block sidebar
             ul(class='sidebar-nav')
@@ -20,22 +26,21 @@ html(lang='en')
                 hr
               if user && 'admin'==user.userrole
                 li
-                  a(href='/taxon/create') Create new taxon
+                  a(href='/taxon/create') Create VAL taxon
                 li
                   hr
 
-              if user
-                li #{user.username}
+              if user && user.userId
+                li User: #{user.username}
                 li
                   a(href='/user/logout') Logout
               else
                 li
                   a(href='/user/login') Login
-
-              li
-                a(href='/user/register') Register
-              li
-                a(href='/user/reset') Reset
+                li
+                  a(href='/user/register') Register
+                li
+                  a(href='/user/reset') Reset
 
         div(class='col-sm-10')
           block content

@@ -2,7 +2,7 @@ extends layout
 
 block content
 
-  h3 User Login
+  h3= title
 
   form(method='POST' action='/user/login')
     div.form-group
@@ -16,8 +16,8 @@ block content
             tr
               td Password
               td
-                input#password.form-control(type='text', name='password' value=user.password)
+                input#password.form-control(type='password', name='password' value=user.password)
 
     button.btn.btn-primary(type='submit') Login
-    a(href=`${cancel_url}`)
+    a(href=`/`)
       button.btn(type='button') Cancel

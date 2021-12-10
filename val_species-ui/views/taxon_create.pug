@@ -68,10 +68,14 @@ block content
               input#infraspecificEpithet.form-control(type='text', placeholder='' name='infraspecificEpithet' value=(undefined===taxon ? '' : taxon.infraspecificEpithet))
 
       button.btn.btn-primary(type='submit') Save
-      a(href=`${this_url}`)
-        button.btn(type='button') Get GBIF
-      a(href=`/`)
-        button.btn(type='button') Cancel
+      if taxonId
+        a(href=`https://www.gbif.org/species/${taxonId}` target='_blank')
+          button.btn.btn-primary(type='button') GBIF
+        a(href=`/taxon/${taxonId}`)
+          button.btn(type='button') Cancel
+      else
+        a(href=`/`)
+          button.btn(type='button') Cancel
       script
         include gbif_api.js
 
