@@ -36,8 +36,8 @@ services:
       DB_PORT: 5432
       DB_SSL: 0
       # for nginx to work, this must match the url and host name. use /etc/hosts to map these onto localhost, etc.
-      #VIRTUAL_HOST: api.val_species.vtatlasoflife.org
-      VIRTUAL_HOST: localhost
+      VIRTUAL_HOST: val_species.vtatlasoflife.org
+      #VIRTUAL_HOST: localhost
     depends_on:
       - val_species-db-postgis
       - nginx-proxy

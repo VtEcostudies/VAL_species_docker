@@ -22,9 +22,10 @@ const config = {
   email_hostname: 'vtecostudies.org',
   app_servicename: 'VAL Species Registry',
   openRoutes: [
+    '/user/init',
     '/',
     '/taxon/list',
-    /^\/taxon\/.*/,
+    '/taxon/*/detail',
     { url: /^\/taxon\/.*/, methods: ['GET'] } // /taxon/:id
   ]
 }

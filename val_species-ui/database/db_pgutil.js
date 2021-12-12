@@ -21,28 +21,20 @@ module.exports = {
   this funtion, by reference, and update that array here.
   OPTIONS: (1) Pass an empty array to be filled here, or
   (2) Use the object returned from here.
- */
-async function getColumns(tableName, columns=[]) {
-
-    const text = `select * from ${tableName} limit 0;`;
-
-    await query(text)
-        .then(res => {
-            res.fields.forEach(fld => {
-                columns.push(String(fld.name));
-            });
-            console.log(`db_pgutil::getColumns | ${tableName} columns =>`, columns, `^ ${tableName} columns.`);
-            tableColumns[tableName] = columns;
-            return {tableName: columns};
-        })
-        .catch(err => {
-            throw err;
-        });
+*/
+async function getColumns(tableName) {
+  return new Promise((resolve, reject) => {
+    resolve({'tableName': tableName, columns: tableColumns[tableName]});
+  })
 }
 
 /*
   New function to set local file-scope object of table columns, and
   to use promises.
+
+  Inputs:
+    tableName: required - the name of table whose columns are retrieved and stored in local file-scope array
+    columns: optional - pre-loaded columns to enable eg. table-join requests for columns not in the core table
 */
 function setColumns(tableName, columns=[]) {
 

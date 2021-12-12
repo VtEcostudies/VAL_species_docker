@@ -4,7 +4,7 @@ block content
 
   h3= title
 
-  form(method='POST' action='/user/login')
+  form(method='POST' action=`${post_action || '/user/login'}`)
     div.form-group
       div(class='row')
         div(class='col-sm-4')
